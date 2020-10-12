@@ -73,6 +73,11 @@ Click Next.
 
 ![Trigger](/images/actions.jpg)
 
+Click Next then Submit.
+
+15. Now we can watch Ravi demo the CI portion. When the CI cycle is complete and a new artifact appears in DockerHub your deployment should kick off. Your instructor will share a kubectl command so you can see your namespace appear once your artifact deploys. In the HarnessUI click on Continuous Deployment > Deployments on the left hand side of the screen. 
+
+![Trigger](/images/waitforcd.jpg)
 
 
 
