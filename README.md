@@ -29,7 +29,7 @@ In this lab we're going to setup the Continuous Delivery infrastructure which wi
 
 Click submit. That will take you to the Service Overview.
 
-5. In the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. This is a sample connection to the public hub.docker.com domain setup automatically for harness.io. In non-training or testing environments, you would most likely delete this connector. For the Docker image name put rlachman/amazingapp.
+5. In the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. This is a sample connection to the public hub.docker.com domain setup automatically for harness.io. In non-training or testing environments, you would most likely delete this connector. For the Docker image name put rlachhman/amazingapp.
 
 ![Artifact Source](/images/artifact_source.jpg)
 
@@ -59,6 +59,22 @@ Click submit when done.
 
 When you're done. Click submit.
 
-11. Now we have just one last thing to setup on the CD side, a trigger. 
+11. Now we have just one last thing to setup on the CD side, a Trigger. Click on Setup -> "Your App Name" -> Triggers +Add Trigger.
+
+12. Give it a name using your studentID. Then click next. 
+
+13. Select On New Artifact for Condition. This will make the Artifact Source dropdown appear. Select rlachhman_amazingapp (or your own source if you are doing the CI portion of this Lab). Set the Build/Tag Filter to .* and tick the RegEx tickbox. (Note that .* is just an anything wildcard in RegEx.)
+
+![Trigger](/images/trigger.jpg)
+
+Click Next. 
+
+14. Set your Actions Execution Type to Workflow and select your workflow from the dropdown. For Build/Version select Last Collected and then select your artifact source from the dropdown. Set the Build / Tag .* and tick the RegEx tickbox as above.
+
+![Trigger](/images/actions.jpg)
+
+
+
+
 
 
