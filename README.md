@@ -13,7 +13,7 @@
 
 ## Lab 2 - Setup the CD side of the equation
 
-In this lab we're going to setup the Continuous Delivery infrastructure which will allow us to deploy the output of the Continuous Integration with Drone we will demo. 
+In this lab we're going to setup the Continuous Delivery infrastructure which will allow us to deploy the output of the Continuous Integration with Drone we will demo or run for ourselves. 
 
 1. Still in the Harness UI, click on the Setup menu on the left-hand side of the UI.
 
@@ -29,7 +29,7 @@ In this lab we're going to setup the Continuous Delivery infrastructure which wi
 
 Click submit. That will take you to the Service Overview.
 
-5. In the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. This is a sample connection to the public hub.docker.com domain setup automatically for harness.io. In non-training or testing environments, you would most likely delete this connector. For the Docker image name put rlachhman/amazingapp.
+5. In the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. This is a sample connection to the public hub.docker.com domain setup automatically for harness.io. In non-training or testing environments, you would most likely delete this connector. For the Docker image name put rlachhman/amazingapp OR your own DockerHub version if you are doing the CI Part by hand. 
 
 ![Artifact Source](/images/artifact_source.jpg)
 
