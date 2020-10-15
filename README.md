@@ -35,7 +35,7 @@ Click submit. That will take you to the Service Overview.
 
 Click submit when done.
 
-6. Click on Services in the popcorn trail on the top part of the Harness UI and select Environments in the dropdown to swith to to setting up the environbment we will be deploying to.
+6. Click on Services in the popcorn trail on the top part of the Harness UI and select Environments in the dropdown to swith to to setting up the Environment we will be deploying to.
 
 7. Click Add Environment button and give your environment a name that starts with your student ID. Set the environment type to non-production.
 
