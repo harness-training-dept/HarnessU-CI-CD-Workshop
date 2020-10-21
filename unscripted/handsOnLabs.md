@@ -49,71 +49,56 @@ When you click submit that will take you to the Environment Overview screen.
 
 Click submit when done. 
 
-9. Click back on your application name in the popcorn trail and then click on Workflows. Click Add Workflow.
+9. Click back on in the popcorn trail and switch to Workflows. Click Add Workflow.
 
-10. Give your workflow a name that starts with your Student ID. Select rolling deployment for your Deployment Type. Then for Environment, Service, and Infrastructure Definition be sure to pick the ones that start with your Student ID.
+10. Give your workflow your name and select rolling deployment for your Deployment Type. Then for Environment, Service, and Infrastructure Definition pick the ones you just created with your name.
 
-![Workflow](/images/workflow.jpg)
+![Workflow](/images/wkfloflo.jpg)
 
 When you're done. Click submit.
 
-11. Now we are ready to do the actual deploy! Click on the Deploy button in the upper right corner of the screen. That will bring up the Start New Deployment dialog box. 
+11. Harness will crate a workflow framework, that currently just includes deploying nginx. But there's lots of room for further steps along the way. Well make a much more interesting workflow in Lab 3, we promise. 
 
-12. Since we specified "library/nginx" as our artifact source we now have to pick which version of Nginx we wish to deploy. For our first deploy select an older version 1.9.15 for example. (We will upgrade in the next lab to the current version.)
+That said, now we are ready to do the actual deploy! Click on the Deploy button in the upper right corner of the screen. That will bring up the Start New Deployment dialog box. 
 
-![Start New Deployment](/images/start_new.jpg)
+12. Since we specified "library/nginx" as our artifact source we now have to pick which version of Nginx we wish to deploy. Select whichever tag you like. This is just a test after all. 
+
+![Start New Deployment](/images/newnew.jpg)
 
 It's a good idea for test and training deployments to select Send Notification to Me Only to avoid spamming your coworkers with test deployments. Click Submit to kick off the deployment.
 
 13. Harness will switch to the deployment screen. Click on each box as it appears to see what information Harness provides. Click on the Rollout Deployment box to see the results from the command line on the delegate.
 
-![Live Deployment View](/images/deployment_view.jpg)
+![Live Deployment View](/images/viewdepdep.jpg)
 
-Your instructor will also be displaying information from the actual cluster itself on the projector. Look up there to see your namespace appear once your deployment gets going. 
+## Lab 3 - Cleanup the cluster
 
+1. Now we can run a deployment to delete our previous deployment and leave our training cluster neat and tidy! I know, I know, we just installed this workload . . . but we've got cooler stuff to do ahead! Go back to Setup screen in the Harness UI and select your application. We're going to create a new Workflow to delete our namespace and the pod inside it. 
 
-## Lab 3 - Upgrade your Nginx deployment to the latest version
+2. Click on Workflows and Add Workflow. Give this workflow a different name, but be sure to include your name. Otherwise same settings as the previous Workflow.
 
-1. Click on Setup and go back into your Application. Then go to Deployments and click on the Deployment you just ran. In there click on the Deploy button to deploy a newer version of Nginx.
-
-![Deploy Latest](/images/deploy_latest.jpg) 
-
-Be sure to select the most recent version of Nginx and hit submit.
-
-2. Once the deploy starts click on the Rollout Deployment step and verify the yaml with the latest version of Nginx.
-
-![Check Upgrade](/images/check_upgrade.jpg)
-
-It really can be that easy to upgrade a service!
-
-## Lab 4 - Cleanup the cluster
-
-1. Now we can run a deployment to delete our previous deployment and leave our training cluster neat and tidy! Go back to Setup screen in the Harness UI and select your application. We're going to create a new Workflow to delete our namespace and the pod inside it. 
-
-2. Click on Workflows and Add Workflow. Give this workflow a different name, but be sure to include your student ID.
-
-![Cleanup Workflow](/images/clean_wf.jpg)
+![Cleanup Workflow](/images/cleanclean.jpg)
 
 Click submit.
 
 3. By default Harness put a Rollout Deployment step in for us, but we don't actually need that. Hover your mouse over the Rollout Deployment stage and click the X that appears next to that step to delete it. 
 
-![Remove Step](/images/remove_step.jpg)
+![Remove Step](/images/norollroll.jpg)
 
 4. Once that step is gone click on Add Step. This takes you to the Workflow step creation dialog. Click on Kubernetes and then the Delete action. 
 
-![Delete Step](/images/delete_step.jpg)
+![Delete Step](/images/deldel.jpg)
 
 Click next.
 
 5. Tell Harness what you want the Kubernetes delete command to delete. We will hardcode our namespace, but you could also use a variable here to Delete whatever namesapce was associated with the deployment. 
 
-![Configure Delete](/images/configure_delete.jpg)
+![Configure Delete](/images/confdeldel.jpg)
 
 Click Submit.
 
-6. Now we can run our delete deployment. Click Deploy in the upper right hand corner. Once the Deploy starts click on the Delete task to watch the command line. You can also verify with the instructor's command line on the screen.
+6. Now we can run our delete deployment. Click Deploy in the upper right hand corner. You don't have to choose an image this time, because this workflow came not to deploy, but to destroy! (Sorry couldn't resist.) Once the Deploy starts click on the Delete task to watch the command line. 
 
-![Final Delete](/images/final_delete.jpg)
+![Final Delete](/images/finaldeldel.jpg)
 
-7. Pat yourself on the back! Labs complete! Job well done!
+7. Pat yourself on the back! First series of labs complete.
