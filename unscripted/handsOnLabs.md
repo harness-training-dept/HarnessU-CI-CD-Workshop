@@ -171,6 +171,185 @@ Click Next then Submit.
 
 ![Trigger](/images/waitforcd.jpg)
 
+## Hour 3 Labs
+
+## Lab 1 - Setup a Harness Application for our canary deployment
+
+1. Click on the Setup menu and go back into your Application.
+
+2. Click on Services then click on the Add Service button. Give your service a name that includes your name and set the Deployment Type to Kubernetes. Click submit. That will take you to the Service Overview.
+
+3. In the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. For the Docker image name put harness/cv-demo . That is pointing to the Docker image we made for this lab.
+
+![Artifact Source](/images/demosrcsrc.png)
+
+Click submit when done.
+
+4. Now we need to hook our service up to a directory in Github which contains the yamls to install our demo application. To do this click on the three little dots in the upper right hand corner of the Manifests sections and select Link Remote Manifests
+
+![remote manifests](/images/lnkremrem.jpg)
+
+5. Provide Harness with the information to find the remote manifests on Gitbut. We are using normal K8s Resource YAMLs in a Go Template format - the same as we use in the Harness UI. We've already setup a Connector to the our Github account for you. Fill out the form like this:
+
+Set the Manifest Format to ```Kubernetes Resource Specs in YAML format```
+
+Set the Source Repository to ```CVProm (https://github.com/harness-training-dept/cvprom)```
+
+Set the Branch to ```master```
+
+Set the File/Folder path to ```workload```
+
+![edit deployment.yaml](/images/remmanman.jpg)
+
+Click Submit when done.
+
+It should look like this:
+
+![after link](/images/aftlnklnk.jpg)
+
+6. Now that we've updated the service definition we can move on to setting up the Environment we're going to deploy to. Click on your application name in the popcorn trail on the upper left of the Harness UI to return to your Application main screen. Then click on Environments to setup an environment to deploy to. 
+
+7. Now that we've setup a Service we can just the Environment we setup in the very first labs. Our next step is to build the canary deployment.
+
+8. Using the popcorn trail switch to Workflows in your application. Click on the Add Workflow buttom. Give your new workflow a name that includes your name. Select Canary Deployment for your Workflow Type, and finally select the Environment you setup previously.
+
+![workflow](/images/wfcancan.jpg)
+
+Click submit when done. Now we are in our Workflow builder. Harness has setup an empty Canary template for us. Now let's fill it out.
+
+9. First we're going to add a Deployment Phase. Under Deployment Phases click on + Add Phase
+
+![add phase](/images/addphapha.jpg)
+
+In the Phase definition select the CV Canary Service you setup just before this and the Infrastructure Definition you setup in hour 1. 
+
+![phase setup](/images/cphasetset.jpg)
+
+Click submit when done. Now your Workflow screen should look like this:
+
+![deployment screen](/images/depscrcancan.jpg)
+
+10. Ok! Now we have the Deployment framework setup. First off we're going to configure the Canary Phase of the Workflow with a verification and rollback step. First up we're going to need to add a verification phase to our canary. (This is the step where we will consult metrics from Prometheus about our Canary. (TL;DR Prometheus is an open source metrics gathering agent and search engine for distributed systems.) To set this up we'll need to add a Verification step to our Canary Phase. In the Verify section of the Canary Phase click on Add Step. Your screen should look something like this:
+
+![add step](/images/adcandeldel.jpg)
+
+If you don't see the Prometheus step listed just type "prom" in the search box and that should bring it up. Once it's there select it and click Next.
+
+14. Next we are going to configure the verification by specifying what metrics we're interested in. First specify the Prometheus server we setup called Prometheus CV. Next we're going to specify our first metric to monitor. 
+
+For the Metric Name specify "error_call"
+
+For the Metric Type pick "Error" in the dropdown
+
+For Group Name specify "custom" 
+
+And for Query specify this:
+```io_harness_custom_metric_error_call{kubernetes_pod_name="$hostName"}```
+
+Click on the +Add button to add an additional metric
+
+For the 2nd Metric:
+
+Metric Name specify "normal_call"
+
+For the Metric Type pick "Throughput" in the dropdown
+
+For Group Name specify "custom" 
+
+And for Query specify this:
+```io_harness_custom_metric_normal_call{kubernetes_pod_name="$hostName"}```
+
+When you're done it should look like this:
+
+![two metrics](/images/metricscancan.jpg)
+
+15. Set your analysis time to 5 mins and your algorhytim to "very sensitive". 
+
+Should look like this:
+
+![analysis time](/images/analysiscancan.jpg)
+
+Hit Submit when done. Your Canary Phase should now look like this: 
+
+![verifyfinal](/images/verifinalfinal.jpg)
+
+16. Now we need to specify a Roll Back Setp to delete the Canary if the deployment fails. Under Rollback Steps select "Add Step" under "1. Deploy" Search for the "Delete" step by typing del into the search box. Select the Delete command and click Next.
+
+![delsearch](/images/delsrchcancan.jpg)
+
+17. Give your Delete step a name and then specify ```${k8s.canaryWorkload}``` for Resources. That's a variable that specifies the Canary workload during the deployment.
+
+![candel](/images/aurevoircancan.jpg)
+
+Click Submit when done. Now your Workflow should look like this:
+
+![canwf](/images/wfmoremore.jpg)
+
+18. Go back out of the Canary Phase of your Workflow and into the main part of your workflow. Your screen should look like this:
+
+![nophase](/images/nophase.jpg)
+
+19. Now we're going to add the main deployment phase that will happen after a successful canary. To do that click on + Add Phase under Deployment Phases. You will need to select the same Service and Infrastructure as you did for the Canary Phase. 
+
+![phasephase](/images/phasephase.jpg)
+
+Click Submit when done. Now you have a Rolling Deployment phase all setup that runs after a sucessful Canary.
+
+20. Go back out to the main part of your Workflow to add two Workflow Variables to our workflow. Click on edit icon next to Workflow Variables.
+
+![wfvedit](/images/workflowvar1.jpg)
+
+Then click on the + Add button and add the following two variables:
+
+Variable Name: verify_canary
+
+Default Value: yes
+
+All else leave as is. 
+
+Variable Name: metric_verification
+
+Default Value: Prometheus
+
+All else leave as it. 
+
+Should look exactly like this before you hit Save. 
+
+![wfvar](/images/wfvar2.jpg)
+
+Now you're back out with a completed Canary Workflow! Well done!
+
+![wfalldone](/images/wfalldone.jpg)
+
+21. Now! we are ready to start deploying. But remember a Canary is designed to be compared to an already running microservice. So first we have to Deploy once to setup a baseline to compare our Canary to. To do this we'll run our Deployment but skip the verification stage. Scroll up to the top of the Workflow Overview screen and Click on the big blue Deploy button:
+
+![deploybang](/images/deploybang.jpg)
+
+22. That brings up our Start New Deployment screen. Change the verify_canary variable to no - this tells Harness to skip/automatically pass the Verify step. Leave metric_verification the default. Select the Tag# stable artifact.
+
+![firstgood](/images/firstgood.jpg)
+
+Hit submit when done. 
+
+![alldonefirst](/images/alldone1st.jpg)
+
+Now we have one good deployment to compare our canaries to! Take a moment to inspect the Prometheus step in your Canary Phase. You may need to scroll to left to get back over to it. 
+
+![firstprom](/images/1stprom.jpg)
+
+23. Take a 5 minute coffee / tea / beer / soda break to let our stable version build up some nice stable data in Prometheus. 
+
+24. Ok welcome back. Now we can rerun our Deployment. But this time we're going to enable verification and we're going to deploy a less stable version. Go back into the Setup screen and select your application. Then go to your Workflow and hit Deploy. Leave both variables at their defaults but this time select the Tag# unstable version of the container. Hit Deploy when done. 
+
+![badcanary](/images/badcanary.jpg)
+
+25. While your canary deployment is running. Click on the Prometheus step to watch the verification process run. This can take a bit of time so feel free to freshen up the beverage from step 27. 
+
+![promrunnin](/images/promrunnin.jpg)
+
+26. Once the Prometheus step has completed and we realize that the artifact tagged unstable turned out to be unstable! The Canary gets marked failed and the Canary Phase Rollback step we created was run to delete the suspect Canary. 
+
+![arcan](/images/arcan.jpg)
 
 
 
