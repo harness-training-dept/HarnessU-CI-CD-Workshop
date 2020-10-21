@@ -1,49 +1,51 @@
-# Kubernetes Continuous Deliver Workshop Labs
+# {u}scripted Harness University Hands-On Labs
 
 ## Lab 1 - Login to app.harness.io and familiarize yourself with the environment
 
 
-1. Load up your Chrome web browser and login to https://app.harness.io with the username and password from your lab sheet. 
+1. You should receive an invite to https://app.harness.io in the email you used to register for this session. Follow the links in that email to setup your login and proceed to the Harness UI.
 
-2. Click around and explore the GUI. Please note depending on the user role you have in your own organization's Harness implementation you may not have access to the menus and settings you see here in our training setup. 
+2. Click around and explore the UI. Please note depending on the user role you have in your own organization's Harness implementation you may not have access to the menus and settings you see here in our training setup. 
 
-5. We will be visiting the Setup menu most often. Click in there and explore the different connectors and setting options. 
+3. We will be visiting the Setup menu most often. Click in there and explore the different connectors and options. 
 
-6. Ask your instructor if you don't understand the use of any configuration or dashboard.
+4. Ask your instructor if you don't understand the use of any configuration or dashboard.
 
 ## Lab 2 - Setup a basic Nginx deployment on our training cluster
 
-1. Click on the Setup menu in the upper right hand corner of the Harness GUI.
+1. Click on the Setup menu on the left hand side of the Harness UI.
 
-2. Click on the Add Application button and fill out the information for your new application. Be sure to use your student ID in the name of your application so you can find it easily later.
+2. Click on the Add Application button and fill out the information for your new application. Be sure to use your name and at least first initial of your last name (or the name of your pet or really anything rated G that you'll remember! Note that hereinafter we will just refer to this as your name.) in the Name field of your application so you can find it easily later among all the other students. 
 
-![Application Setup](/images/application.jpg)
+![Application Setup](/images/appapp.jpg)
 
 3. Click submit and Harness will create your new application. Now we can setup the other parts of the deployment.
 
-4. Click on Services to add our first service to this application, then click on the Add Service button. Give your service a name that includes your student ID (as you did with the application) and set the Deployment Type to Kubernetes.
+4. Click on Services to add our first service to this application, then click on the Add Service button. Give your service a name that includes your name (as you did with the application) and set the Deployment Type to Kubernetes.
 
-![Add Service](/images/add_service.jpg)
+![Add Service](/images/addservserv.jpg)
 
 Click submit. That will take you to the Service Overview.
 
-5. In the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. This is a sample connection to the public hub.docker.com domain setup automatically for harness.io. In non-training testing environments you would most likely delete this connector. For the Docker image name put library/nginx . That will allow us to pick our nginx version when we deploy.
+5. Since we specififed Kubernetes in the Service setup, Harness went ahead and created a Go Template for our workload. All we need do really to test this is specify which container image we'd like to run. To do this, in the Service Overview screen click on Add Artifact Source and select Docker Registry. For Source Server select Harness Docker Hub. This is a connection to the public hub.docker.com domain. For the Docker image name put library/nginx . That will allow us to pick our nginx version from among the many when we deploy.
 
-![Artifact Source](/images/artifact_source.jpg)
+![Artifact Source](/images/artisrcsrc.jpg)
 
 Click submit when done. We won't be changing any of the preconfigured yaml at this time. We're just doing a simple first deployment. 
 
-6. Click on your application name in the popcorn trail on the upper left of the Harness UI to return to your Application main screen. Then click on Environments to setup an environment to deploy to. 
+6. Near the top of the screen you should see the popcorn trail for your Application. Click on the drop down triangle next to Services to see all the other parts of your Application. Click on Environments to setup the next key piece of our deployment. 
 
-7. Click Add Environment button and give your environment a name that starts with your student ID. Set the environment type to non-production.
+![Popcorn Trail](/images/poppop.jpg)
 
-![Environment](/images/environment.jpg)
+7. Click the  Add Environment button and give your Environment your name. Set the environment type to non-production.
+
+![Environment](/images/envenv.jpg)
 
 When you click submit that will take you to the Environment Overview screen. 
 
-8. Add an Infrastructure Definition. Give it a name that starts with your student ID. Select Kubernetes Cluster for your Cloud Provider Type, and set the deployment type to Kubernetes. Then you can select the Cloud Provider we have setup for this workshop. It will include the name of the city or state the workshop is held in. Finally for Namespace please put your Student ID so your instructor can see your deployment from the command line easily. 
+8. It's helpful to think of an Environment as the overall category e.g., "staging" or "QA", whereas an Infrastructure Definition points to something more specific like a Kubernetes cluster or Kubernetes Namespace. Click Add Infrastructure Definition and give it your name. Select Kubernetes Cluster for your Cloud Provider Type, and set the deployment type to Kubernetes. Then you can select the Cloud Provider we have setup for this workshop called "unscripted-harnessu-k8s-cluster". Finally for Namespace please put your name. 
 
-![Infrastructure Definition](/images/infra_def.jpg)
+![Infrastructure Definition](/images/infradefdef.jpg)
 
 Click submit when done. 
 
