@@ -1,5 +1,7 @@
 # {u}scripted Harness University Hands-On Labs
 
+## Hour 1 Labs
+
 ## Lab 1 - Login to app.harness.io and familiarize yourself with the environment
 
 
